@@ -1,81 +1,38 @@
-# 🛡️ AI Model Security & Integrity Audit CLI (Pure NPM)
+# 🛡️ AI Model Security Audit CLI
 
-Aplikasi CLI interaktif berbasis **Node.js / NPM** untuk mengaudit keamanan dan integritas model AI/ML secara mendalam menggunakan mesin **Promptfoo ModelAudit** dan **ONNX Graph Inspector**.
-
-Didesain untuk berjalan **cross-platform tanpa Docker** (Windows CMD, Windows PowerShell, macOS, Linux) dengan fitur **Auto-Installer Package Python**, **Bulk Scanning Folder**, **Interactive TUI**, dan **Executive Bento HTML Dashboard Report** yang siap dicetak ke PDF untuk pelaporan ke atasan.
+Tool CLI interaktif untuk memindai keamanan dan integritas file model AI/ML (seperti format `.onnx`, `.pt`, `.safetensors`, `.bin`, `.h5`, `.pkl`, dll.) dari celah keamanan, backdoor, eksploitasi kode, serta anomali bobot, dan langsung menghasilkan laporan HTML siap print ke PDF untuk atasan.
 
 ---
 
-## 🚀 Cara Menjalankan
+## 🚀 Cara Pakai
 
-Masuk ke folder project:
+### 1. Masuk ke Folder Project
 ```bash
-cd /Users/femto/Worklab/modelscan-testing
+cd /path/to/modelscan-testing
 ```
 
-Install dependensi npm (hanya dilakukan sekali):
+### 2. Install Dependensi (Cukup sekali saja)
 ```bash
 npm install
 ```
 
-Jalankan UI interaktif:
+### 3. Jalankan Tool
 ```bash
 npm start
 ```
-*(atau bisa juga `node index.mjs`)*
+*(atau bisa pakai `node index.mjs`)*
 
-> **⚡ Auto-Installer Otomatis:**
-> Saat pertama kali dijalankan, script akan secara otomatis mengecek apakah package Python (`modelaudit` dan `onnx`) sudah terpasang. Jika belum, script akan otomatis membuat virtual environment `.venv` terisolasi dan menginstall kedua package tersebut via pip tanpa memerlukan setup manual!
-
----
-
-## 💻 Dukungan Windows (CMD & PowerShell) & Mac / Linux
-
-Aplikasi ini 100% didesain native cross-platform:
-- **Windows Friendly**: Mendukung path Windows berkoma/berspasi seperti `C:\Users\Username\Downloads\model.onnx` atau `.\models\`, baik via drag-and-drop terminal, Command Prompt (CMD), maupun PowerShell.
-- **Isolasi Tanpa Docker**: Menggunakan local virtualenv (`.venv/`) sehingga tidak mengotori environment global sistem dan tidak memerlukan Docker / container runtime.
-- **Non-blocking Interactive TUI**: Menggunakan `inquirer`, `ora`, dan `chalk` yang adaptif pada semua tipe terminal emulator.
+> **Info:** Script akan otomatis mendeteksi dan menginstall package Python yang diperlukan (`modelaudit` & `onnx`) ke folder `.venv/` lokal saat pertama kali dijalankan.
 
 ---
 
-## ✨ Fitur Utama
+## 📋 Pilihan Menu
 
-### 1. 🎛️ Interactive Terminal UI (TUI)
-Menu navigasi interaktif:
-- **Scan Single Model File**: Pindai 1 file model spesifik (mendukung drag-and-drop file path).
-- **Bulk Scan Folder**: Masukkan path folder (misal `~/Downloads` atau `./models`), tool akan otomatis mencari semua file model dan memindai semuanya secara berurutan dengan progress spinner.
-- **Scan Multiple Files**: Masukkan beberapa file sekaligus (dipisahkan koma atau spasi).
-- **Buka Laporan Terakhir**: Buka laporan HTML Bento terbaru langsung di browser default.
-- **Cek Status Engine**: Memeriksa status Python, virtual environment, dan dependensi security scanner.
+Saat tool berjalan, pilih aksi yang diinginkan:
+1. **🔍 Scan Single File Model**: Pindai 1 file model (bisa drag-and-drop file langsung ke terminal).
+2. **📁 Bulk Scan Folder**: Pindai seluruh model di dalam satu folder sekaligus.
+3. **📝 Scan Multiple Files**: Masukkan beberapa path file dipisahkan tanda koma atau spasi.
+4. **🌐 Buka Laporan Terakhir**: Langsung membuka laporan HTML audit terbaru di browser.
 
-### 2. 📁 Format Model yang Didukung (Bulk Scan)
-Secara otomatis mendeteksi dan mengaudit 42+ format model:
-- **ONNX**: `.onnx` (Graph structure validation, inputs/outputs shape, tensor anomaly)
-- **PyTorch**: `.pt`, `.pth`, `.bin`
-- **SafeTensors**: `.safetensors`
-- **Pickle**: `.pkl`, `.pickle`, `.joblib`
-- **Keras / TensorFlow**: `.h5`, `.keras`, `.pb`
-- **Lainnya**: `.npy`, `.gguf`
-
-### 3. 📊 Modern Bento Executive Report (Ciamik & PDF Ready)
-Setiap selesai scanning, sistem otomatis membuat laporan HTML berestetika **Bento Light Canvas** (`#f1f3f7` dotted background, Plus Jakarta Sans, candy-striped progress bar, dark contrast score box):
-- **Executive Verdict**: Ringkasan status model (COMPLIANT / NEEDS REVIEW / HIGH RISK).
-- **KPI Metrics Cards**: Total Model, Clean Count, Warning Count, Critical Count, Total Size, dan Durasi.
-- **Detailed Findings per Model**:
-  - Deteksi Arbitrary Code Execution (injeksi exploit Python/Pickle).
-  - Deteksi Backdoor Operators.
-  - Deteksi Anomali Distribusi Bobot (*Weight Distribution Anomaly*).
-  - Arsitektur Tensor ONNX (Dimensi input citra, output class/regressor, framework pembuat).
-- **Tombol "🖨️ Print / Save PDF"**: Sudah terpasang styling `@media print` sehingga saat di-print / Save as PDF melalui browser, tampilan langsung rapi sebagai dokumen laporan manajemen ke atasan.
-- **Tombol "💾 Export JSON"**: Untuk kebutuhan compliance teknis dan SIEM integration.
-
----
-
-## 📂 Struktur File Project
-- [`index.mjs`](file:///Users/femto/Worklab/modelscan-testing/index.mjs) — Entry point CLI interaktif & status manager.
-- [`scanner.mjs`](file:///Users/femto/Worklab/modelscan-testing/scanner.mjs) — Core engine scanner, auto-installer package (`modelaudit` & `onnx`), dan normalisasi path cross-platform.
-- [`reporter.mjs`](file:///Users/femto/Worklab/modelscan-testing/reporter.mjs) — Generator Modern Bento Executive HTML Dashboard & CLI Table.
-- [`inspect_onnx.py`](file:///Users/femto/Worklab/modelscan-testing/inspect_onnx.py) — Parser ONNX graph & tensor dimensions.
-- [`reports/`](file:///Users/femto/Worklab/modelscan-testing/reports/) — Folder penyimpanan laporan HTML dan JSON.
-- [`package.json`](file:///Users/femto/Worklab/modelscan-testing/package.json) — Konfigurasi dependensi NPM.
+Hasil audit otomatis tersimpan di folder `reports/` dan laporan HTML akan langsung terbuka di browser setelah scan selesai.
 
